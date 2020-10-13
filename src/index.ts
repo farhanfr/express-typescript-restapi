@@ -4,8 +4,10 @@ import morgan from 'morgan';
 import compression from 'compression';
 import helmet from 'helmet';
 import cors from 'cors';
+import dotenv from 'dotenv';
 
 import UserRoutes from './routers/UserRoutes';
+import AuthRoutes from './routers/AuthRoutes';
 
 class App{
     public app:Application;
@@ -14,6 +16,7 @@ class App{
         this.app=express();
         this.plugins();
         this.routes();
+        dotenv.config();
     }
 
     protected plugins():void{
@@ -29,6 +32,7 @@ class App{
             res.send("route use typescript")
         });
         this.app.use("/api/v1/users",UserRoutes);
+        this.app.use("/api/v1/auth",AuthRoutes);
     }
 }
 
@@ -36,10 +40,3 @@ const port:number = 8080;
 const app = new App().app;
 app.listen(port);
 
-// const app = express();
-
-// app.route("/").get((req,res)=>{
-//     res.send("test");
-// });
-
-// app.listen(8080);
