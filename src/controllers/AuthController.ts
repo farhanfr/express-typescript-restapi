@@ -1,5 +1,7 @@
+import { compare } from 'bcrypt';
 import { Request, response, Response } from 'express';
-import PasswordHash from '../utils/PasswordHash';
+import Authentication from '../utils/Authentication';
+import PasswordHash from '../utils/Authentication';
 
 const db = require("../db/models");
 
@@ -17,8 +19,28 @@ class AuthController {
             'data': createUser
         })
     }
-    login(req: Request, res: Response): Response {
-        return res.send("create success");
+    login = async (req: Request, res: Response): Promise<Response> => {
+        let {username , password} = req.body;
+        const user = await db.user.findOne({
+            where : {username}
+        });
+
+        //check password
+        let check = await Authentication.passwordCompare(password,user.password);
+
+        //generate token
+        if (check) {
+            let token = Authentication.generateToken(user.id,username,password);
+            return res.send({
+                token
+            });
+        }
+
+        return res.send("auth failed");
+    }
+
+    profile = (req:Request,res:Response):Response =>{
+        return res.send(req.app.locals.credential);
     }
 }
 
