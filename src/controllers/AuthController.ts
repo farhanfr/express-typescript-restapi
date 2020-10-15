@@ -22,7 +22,7 @@ class AuthController {
     login = async (req: Request, res: Response): Promise<Response> => {
         let {username , password} = req.body;
         const user = await db.user.findOne({
-            where : {username}
+            where : {username:username}
         });
 
         //check password
