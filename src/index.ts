@@ -8,6 +8,7 @@ import dotenv from 'dotenv';
 
 import UserRoutes from './routers/UserRoutes';
 import AuthRoutes from './routers/AuthRoutes';
+import TodoRoutes from './routers/TodoRoutes';
 
 class App{
     public app:Application;
@@ -29,10 +30,11 @@ class App{
 
     protected routes():void{
         this.app.route("/").get((req:Request,res:Response)=>{
-            res.send("route use typescript")
+            res.send("test runnigg")
         });
         this.app.use("/api/v1/users",UserRoutes);
         this.app.use("/api/v1/auth",AuthRoutes);
+        this.app.use("/api/v1/todos",TodoRoutes)
     }
 }
 
